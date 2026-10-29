@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | Appointment Booking{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <section class="hero text-center">
+
+        <h1 class="display-4 fw-bold">
+            Book Your Appointment
+        </h1>
+
+        <p class="lead text-muted mt-3">
+            Explore our services and reserve a convenient
+            time slot in just a few clicks.
+        </p>
+
+        <a href="/services/" class="btn btn-primary btn-lg mt-3">
+            Explore Services
+        </a>
+
+    </section>
+
+
+    <section class="pb-5">
+
+        <h2 class="text-center fw-bold mb-4">
+            Available Services
+        </h2>
+
+        <div class="row g-4">
+
+            {% for service in services %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card service-card shadow-sm h-100 p-4">
+
+                        <h4 class="fw-bold">
+                            {{ service.name }}
+                        </h4>
+
+                        <p class="text-muted">
+                            {{ service.description }}
+                        </p>
+
+                        <p>
+                            <span class="badge bg-dark">
+                                {{ service.duration }} minutes
+                            </span>
+                        </p>
+
+                        {% if user.is_authenticated %}
+
+                            <a href="/book/?service={{ service.id }}"
+                               class="btn btn-primary">
+                                Book Now
+                            </a>
+
+                        {% else %}
+
+                            <a href="/accounts/login/"
+                               class="btn btn-outline-primary">
+                                Login to Book
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+
+                    <div class="alert alert-info text-center">
+                        No services are currently available.
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

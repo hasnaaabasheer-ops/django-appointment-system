@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}My Appointments | Appointment Booking{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                My Appointments
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage and track your appointments.
+            </p>
+        </div>
+
+        <a href="{% url 'service_list' %}"
+           class="btn btn-primary">
+            Book New Appointment
+        </a>
+
+    </div>
+
+
+    <!-- Upcoming Appointments -->
+
+    <div class="mb-5">
+
+        <h4 class="fw-bold mb-3">
+            Upcoming Appointments
+        </h4>
+
+        {% if upcoming %}
+
+            <div class="row g-4">
+
+                {% for appointment in upcoming %}
+
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="card shadow-sm h-100 p-4">
+
+                            <h5 class="fw-bold">
+                                {{ appointment.service.name }}
+                            </h5>
+
+                            <p class="mb-2">
+                                📅 {{ appointment.date }}
+                            </p>
+
+                            <p class="mb-2">
+                                🕐 {{ appointment.time }}
+                            </p>
+
+                            <p class="mb-3">
+
+                                <strong>Status:</strong>
+
+                                {% if appointment.status == 'Confirmed' %}
+
+                                    <span class="badge bg-success">
+                                        Confirmed
+                                    </span>
+
+                                {% elif appointment.status == 'Pending' %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </p>
+
+                            {% if appointment.note %}
+
+                                <p class="text-muted small">
+                                    <strong>Note:</strong>
+                                    {{ appointment.note }}
+                                </p>
+
+                            {% endif %}
+
+                            <a href="{% url 'cancel_appointment' appointment.id %}"
+                               class="btn btn-outline-danger btn-sm">
+
+                                Cancel Appointment
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-info">
+                You don't have any upcoming appointments.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Past Appointments -->
+
+    <div>
+
+        <h4 class="fw-bold mb-3">
+            Past Appointments
+        </h4>
+
+        {% if past %}
+
+            <div class="row g-4">
+
+                {% for appointment in past %}
+
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="card shadow-sm h-100 p-4">
+
+                            <h5 class="fw-bold">
+                                {{ appointment.service.name }}
+                            </h5>
+
+                            <p class="mb-2">
+                                📅 {{ appointment.date }}
+                            </p>
+
+                            <p class="mb-2">
+                                🕐 {{ appointment.time }}
+                            </p>
+
+                            <p class="mb-0">
+
+                                <strong>Status:</strong>
+
+                                {% if appointment.status == 'Completed' %}
+
+                                    <span class="badge bg-primary">
+                                        Completed
+                                    </span>
+
+                                {% elif appointment.status == 'Cancelled' %}
+
+                                    <span class="badge bg-danger">
+                                        Cancelled
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        {{ appointment.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-secondary">
+                You don't have any past appointments.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
